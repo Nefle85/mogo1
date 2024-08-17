@@ -1,0 +1,88 @@
+{# templates/rubrik/rubrik.html.twig #}
+{% extends 'base.html.twig' %}
+
+{% block title %}
+  Articles rubrique "{{ rubrik.name }}"
+{% endblock %}
+
+{% block body %}
+  <div class="container-fluid">
+    <div class="container mt-5">
+      <div class="col-md-12" style="font-size:1.1em;font-weight:bold;color:grey;">{{ rubrik.name|capitalize }}</div>
+
+      {% if posts is empty %}
+        <p>No posts found for this rubrik.</p>
+      {% else %}
+        <div class="row">
+            {% for post in posts %}
+          <div class="col-md-8">
+            {# Affichage du dernier posts #}
+              <div class="row">
+                <h2 class="col-md-12 mb-3"><a class="zxtitreshowrubrik" href="{{ path('show', { id: post.id }) }}">{{ post.title }}</a></h2>
+                <div class="col-md-12" style="font-size:0.7em; font-weight:bold; color:grey;">
+                  <img class="roundedImage" src="{{ asset('divers/avatars/' ~ post.user.avatar) }}" alt="" /> {{ post.user.firstname }} {{ post.user.lastname }}
+                </div>
+                <div class="col-md-12" style="font-size:0.7em; margin-left:30px; margin-top:-10px; color:grey">{{ post.user.city}}</div>
+                <div class="col-md-12 mb-3" style="font-size:0.7em; margin-left:30px; color:red;">{{ post.createdAt|date('l j M Y H:i') }}</div>
+                <div class="col-md-12 mb-3">
+                  {% if post.image %}
+                    <img class="img-fluid" src="{{ asset('divers/images/' ~ post.image) }}" alt="" />
+                  {% endif %}
+                </div>
+                <div class="col-md-12 mb-3">{{ post.abstract|raw }}</div>
+            {% endfor %}
+              </div>
+          </div>
+
+          <div class="col-md-4">
+            {# Affichage des 2 posts suivants #}
+            {% for posts in posts|slice(1, 2) %}
+              <div class="card mb-4">
+                <div class="card-body">
+                  <h2>{{ posts.title }}</h2>
+                  {% if posts.image %}
+                    <img src="{{ asset('divers/images/' ~ posts.image) }}" alt="{{ posts.title }}" class="img-fluid" />
+                  {% endif %}
+                  <p>{{ posts.abstract }}</p>
+                  <p>
+                    <strong>Author:</strong> {{ posts.user.firstname }}
+                  </p>
+                  <p>
+                    <strong>Published at:</strong> {{ posts.createdAt|date('Y-m-d H:i') }}
+                  </p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        {# Affichage des autres posts #}
+        {% if (posts|length) > 3 %}
+          <div class="row">
+            <div class="col-md-12">
+              <h2>More posts</h2>
+              <ul>
+                {% for posts in posts|slice(3) %}
+                  <li>
+                    <h2>{{ posts.title }}</h2>
+                    {% if post.image %}
+                      <img src="{{ asset('divers/images/' ~ posts.image) }}" alt="{{ posts.title }}" class="img-fluid" />
+                    {% endif %}
+                    <p>{{ posts.abstract }}</p>
+                    <p>
+                      <strong>Author:</strong> {{ posts.user.firstname }}
+                    </p>
+                    <p>
+                      <strong>Published at:</strong> {{ posts.createdAt|date('Y-m-d H:i') }}
+                    </p>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        {% endif %}
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
+

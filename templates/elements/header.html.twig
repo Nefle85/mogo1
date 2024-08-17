@@ -1,0 +1,133 @@
+
+<div class="container-fluid">
+  <div class="container">
+    <div class="row">
+      
+      <div class="col-md-2"></div>
+
+      <div class="col-md-7">
+        <nav class="navbar navbar-expand-lg">
+          <div class="container-fluid">
+            <a class="navbar-brand" href="{{ path('app_post') }}">MOGO</a> <!--Si je clique sur MOGO => retour à la page d'accueil-->
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+                <li class="nav-item">
+                  <a class="nav-link active" aria-current="page" href="{{ path('app_post') }}">
+                    <i class="fa-solid fa-house"></i>
+                  </a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="#">A propos</a>
+                </li>
+
+    
+
+                <!--DROPDOWN 1-->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    House
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{path('posts_by_rubrik', {id: 1})}}">Cuisine</a></li>
+                    <li><a class="dropdown-item" href="{{path('posts_by_rubrik', {id: 2})}}">Salle de bains</a></li>
+                    {# 'path' est une fonction du moteur de template, qui génère une URL basée sur une route nommée
+
+                    'posts_by_rubrik' est le nom de la route définie dans la configuration des routes de l'application
+                    => dans Symfony, les routes sont généralement définies dans un fichier YAML,XML, ou via des annotations
+                    
+                    '{id: 3}' est un objet qui contient les paramètres nécessaires pour générer l'URL
+                    Ici, il fournit la valeur de l'identifiant 'id' pour la route nommée 'rubrik'#}
+
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{path('posts_by_rubrik', {id: 6})}}">Maison</a></li>
+                  </ul>
+                </li>
+
+                <!--DROPDOWN 2-->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Food
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href=""{{path('posts_by_rubrik', {id: 7})}}"">Entrées</a></li>
+                    <li><a class="dropdown-item" href=""{{path('posts_by_rubrik', {id: 1})}}"">Plats</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href=""{{path('posts_by_rubrik', {id: 4})}}"">Desserts</a></li>
+                  </ul>
+                </li>
+
+                <!--DROPDOWN 3-->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Kid
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{path('posts_by_rubrik', {id: 8})}}">Activités</a></li>
+                    <li><a class="dropdown-item" href="{{path('posts_by_rubrik', {id: 2})}}">Sorties</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="{{path('posts_by_rubrik', {id: 10})}}">Communication</a></li>
+                  </ul>
+                </li>
+
+                <!--DROPDOWN 4-->
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Mum
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{path('posts_by_rubrik', {id: 11})}}">Move</a></li>
+                    <li><a class="dropdown-item" href="{{path('posts_by_rubrik', {id: 12})}}">Do it yourself</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href= "{{path('posts_by_rubrik', {id: 13})}}"></a>Enjoy</li>
+                  </ul>
+                </li>
+               
+              </ul>
+
+              <div class="header-social-links d-flex">
+
+                {% if app.user %}
+                  <a class="col-md-12 dropbtn" href="{{path('app_logout')}}">
+                    {% if app.user.avatar is empty %}
+                      <i class="fa-solid fa-circle-user"></i>
+
+                    {% elseif app.user.opption is same as ('yes') %}
+                      <img class="roundedImage" src="{{asset('divers/avatars/' ~ app.user.avatar)}}" style="width:25px; height:25px; border-radius:50%">&ensp;
+                      <span class="zxfirstname">{{app.user.firstname|capitalize}}</span> <span class="zxlastname">{{app.user.lastname|upper}}</span>
+                      <a class="loggouts" href="{{ path('app_logout') }}"><i class="fa solid fa-power-off"></i></a>
+                      <a class="zxadmin" href="{{path('admin')}}"><i class="fa fa-circle-play"></i></a>
+
+                    {% else %}
+                      <img class="roundedImage" src="{{asset('divers/avatars/' ~ app.user.avatar)}}" style="width:25px; height:25px; border-radius:50%">&ensp;
+                      <span class="zxfirstname">{{app.user.firstname|capitalize}}</span> <span class="zxlastname">{{app.user.lastname|upper}}</span>
+                      <a class="loggouts" href="{{ path('app_logout') }}"><i class="fa-solid fa-power-off"></i></a>
+                {% endif %}
+
+                  </a>
+
+                {% else %}
+                    <a class="" href="{{path('app_login')}}">
+                      <i class="fa-regular fa-circle-user"></i>
+                    </a>
+
+                {% endif %}
+
+              </div>
+
+
+            </div>
+          </div>
+        </nav>
+      </div>
+
+      <div class="col-md-3"></div>
+
+    </div>
+  </div>
+</div>

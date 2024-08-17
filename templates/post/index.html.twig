@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %} 
+
+    {# ce "extends" peut être compris dans le sens de "require once" ou "include"-->
+<!--quand je vais appeler mon "index.html.twig", tous les fichiers contenus dans "base.html.twig" vont s'afficher également dans "index.html.twig"-->
+<!--les CDN, css, ect... vont également pouvoir s'appliquer. Du coup, je n'ai plus besoin d'un head avec les CDN ici-->
+<!-- cela s'appelle faire de la propagation #}
+
+{% block title %}MOGO{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="container">
+            <div class="row">
+
+
+                <!--AFFICHAGE DU DERNIER ARTICLE-->
+                
+                <!--Dans un col-md-9 qui contient un col-md-7, dans lequel se trouvent chaque élément de l'article dans un col-md-12,
+                qui occupe donc toute la largeur du col-md-7)-->
+
+                <div class="col-md-9"> <!--</div>--> <!--ATTENTION : erreur de structure-->
+                    <div class="row">
+
+                        {% for posts in posts %} {#boucle for #}
+                        <div class="col-md-7 mt-4">
+                            <div class="row">
+
+                                <div class="col-md-12 mb-3 zxrubrikettitre">
+                                    <a class="col-md-12 mb-3 zxtitrerubrik"> {{posts.rubrik.name|capitalize}}
+                                    </a> |{#provient du PostController - A (posts) communique avec la vue #}
+
+                                    <a class="col-md-12 mb-3 zxtitreshow" href="{{path('show', {id: posts.id})}}">
+                                    {{posts.title}}
+                                    </a>
+                                </div>
+
+                                <a class="col-md-12 mb-3 zxabstract" href="{{path('show', {id: posts.id})}}">
+                                    {{posts.abstract}}
+                                </a>
+
+                                <div class="col-md-12 mb-3 mt-3 zxdate">
+                                    {#{{posts.createdAt|date('l j F Y')}}#}
+                                    {#{{posts.createdAt|date('D d M Y')}}#}
+                                     {{ posts.createdAt|date('l j F Y', null, 'fr_FR') }}
+                                    &ensp;
+                                    <img class="roundedImage" src="{{asset('divers/avatars/' ~ posts.user.avatar)}}" alt=""/>
+                                    {{posts.user.firstname|capitalize}} {{posts.user.lastname|upper}} ({{posts.user.city|capitalize}})
+                                </div>
+                            </div>
+                        </div>
+
+                        <a class="col-md-5 mt-5" href="{{path('show', {id: posts.id})}}">
+                            <img class="img-fluid" src="{{asset('divers/images/' ~ posts.image)}}" alt='imageToto'/>
+                        </a>
+                    {% endfor %}
+                    </div>
+                </div>
+
+                <!--AFFICHAGE DE 4 ARTICLES EN SAUTANT LE DERNIER-->
+
+                <div class="col-md-3 mt-5">
+                    {% for posts2 in posts2 %}
+                        <div class="row">
+                              <div class="col-md-2">
+                                <img class="roundedImage" src="{{asset('divers/images/' ~ posts2.image)}}" alt="image de mon article"/>
+                              </div>
+                              <a class="col-md-10 mb-3 zxtitre2" href="{{path('show', {id: posts2.id})}}">
+                                {{posts2.title}}
+                              </a>  
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>    
+{% endblock %}

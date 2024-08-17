@@ -1,0 +1,105 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Show {% endblock %}
+
+{% block body %}
+<div class="container-fluid mt-5">
+    <div class="container">
+        <div class="row">
+        <div class="col-md-2"></div>
+
+            <div class="col-md-8">
+                <div class="row">
+
+                    <div class="col-md-12 mb-3 zrubettitleone">
+                        {{ posts.rubrik.name|capitalize }}
+                    </div>
+
+                    <div class="col-md-12 titleone">
+                        {{ posts.title }}
+                    </div>
+
+                    <div class="col-md-12 mb-4 zxdate">
+                        {#{{posts.createdAt|date('l j F Y')}}#}
+                        {#{{posts.createdAt|date('D d M Y')}}#}
+                        {{ posts.createdAt|date('l j F Y', null, 'fr_FR') }}
+                        &ensp;
+                        <img class="roundedImage" src="{{asset('divers/avatars/' ~ posts.user.avatar)}}" alt=""/>
+                        {{posts.user.firstname|capitalize}} {{posts.user.lastname|upper}}&ensp;({{posts.user.city|capitalize}})
+                    </div>
+                 
+                    <div class="col-md-12 mb-3">
+                        {% if posts.image %}
+                            <img class="img-fluid" src="{{ asset('divers/images/' ~ posts.image) }}" alt="MonImage" />
+                        {% endif %}
+                    </div>
+                    <div class="col-md-12 mb-5 mt-3 contentone">
+                        {{ posts.content|raw }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    {% if posts.comments|length < 1 %}
+                        <p>Il n'y a pas encore de commentaires pour ce post. Soyez le premier commenter...</p>
+                    {% else %}
+                        <p>{{ posts.comments|length }} Commentaire(s)</p>
+                    {% endif %}
+                </div>
+
+                <div class="row mb-5">
+                    {% if app.user %}
+                        <button id="toggle-comment-form" class="col-md-4 btn btn-lg btn-success mb-3">
+                            Ajouter un commentaire
+                        </button>
+                        <div id="comment-form-container" style="display: none;">
+                            {{ form_start(comment_form) }}
+                            {{ form_widget(comment_form.content) }}
+                            {{ form_errors(comment_form.content) }}
+                            {{ form_widget(comment_form.save) }}
+                            {{ form_end(comment_form) }}
+                        </div>
+                    {% else %}
+                        <p><a href="{{ path('app_login') }}">Connectez-vous</a> pour laisser un commentaire.</p>
+                    {% endif %}
+                </div>
+
+                <div class="row">
+                    <button id="toggle-comments" class="col-md-4 btn btn-lg btn-primary mb-3">
+                        Lire le(s) commentaire(s)
+                    </button>
+                    <div id="comments-container" style="display: none;">
+                        {% for comment in comments %}
+                            <div class="comment mb-3">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <img class="img-fluid imgkx" src="{{ asset('divers/avatars/' ~ comment.user.avatar) }}" alt="avatar"/>
+                                    </div>
+                                    <div class="col-md-8 pt-2 userName">{{ comment.user.pseudo|capitalize }}</div>
+                                    <div class="col-md-2 text-end">{{ comment.createdAt|date('H:i') }}</div>
+                                </div>
+                                <div class="col-md-12" style="padding-left:75px;font-size:1.3em;">
+                                    {{ comment.content|capitalize }}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('toggle-comment-form').addEventListener('click', function() {
+        var formContainer = document.getElementById('comment-form-container');
+        formContainer.style.display = formContainer.style.display === 'none' || formContainer.style.display === '' ? 'block' : 'none';
+    });
+
+    document.getElementById('toggle-comments').addEventListener('click', function() {
+        var commentsContainer = document.getElementById('comments-container');
+        commentsContainer.style.display = commentsContainer.style.display === 'none' || commentsContainer.style.display === '' ? 'block' : 'none';
+    });
+</script>
+{% endblock %}
